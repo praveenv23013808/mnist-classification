@@ -7,44 +7,165 @@ To Develop a convolutional deep neural network for digit classification and to v
 ## Problem Statement and Dataset
 
 ## Neural Network Model
+![image-5](https://github.com/user-attachments/assets/fd4e9f39-3fab-4951-85fd-fccf0a3d22e7)
 
-Include the neural network model diagram.
 
 ## DESIGN STEPS
 
 ### STEP 1:
-Write your own steps
-
+Import tensorflow and preprocessing libraries.
 ### STEP 2:
-
+load the dataset
 ### STEP 3:
-
-
+Scale the dataset between it's min and max values
 ## PROGRAM
 
-### Name:
-### Register Number:
+### Name:Praveen.v
+### Register Number:212222233004
+```
+import numpy as np
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.datasets import mnist
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from tensorflow.keras import utils
+import pandas as pd
+from sklearn.metrics import classification_report,confusion_matrix
+from tensorflow.keras.preprocessing import image
+
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+X_train.shape
 
 
-Include your code here
+X_test.shape
+
+single_image= X_train[0]
+
+single_image.shape
+
+plt.imshow(single_image,cmap='gray')
+print("Praveen.v")
+
+y_train.shape
+
+X_train.min()
+
+X_train.max()
+
+X_train_scaled = X_train/255.0
+X_test_scaled = X_test/255.0
+
+X_train_scaled.min()
+
+X_train_scaled.max()
+
+y_train[0]
+
+y_train_onehot = utils.to_categorical(y_train,10)
+y_test_onehot = utils.to_categorical(y_test,10)
+
+ type(y_train_onehot)
+
+y_train_onehot.shape
+
+single_image = X_train[500]
+plt.imshow(single_image,cmap='gray')
+print("Praveen.v")
+
+X_train_scaled = X_train_scaled.reshape(-1,28,28,1)
+X_test_scaled = X_test_scaled.reshape(-1,28,28,1)
+
+Name:Praveen.v
+
+Register Number: 212222233004
+
+model = keras.Sequential()
+model.add(layers.Input(shape=(28,28,1)))
+model.add(layers.Conv2D(filters=32,kernel_size=(3,3),activation='relu'))
+model.add(layers.MaxPool2D(pool_size=(2,2)))
+model.add(layers.Flatten())
+model.add(layers.Dense(64,activation='relu'))
+model.add(layers.Dense(32,activation='relu'))
+model.add(layers.Dense(10,activation='softmax'))
+model.summary()
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+model.fit(X_train_scaled ,y_train_onehot, epochs=5,
+          batch_size=64,
+          validation_data=(X_test_scaled,y_test_onehot))
+
+metrics = pd.DataFrame(model.history.history)
+
+metrics.head()
+
+print("Praveen.V")
+metrics[['accuracy','val_accuracy']].plot()
+
+print("Praveen.V")
+metrics[['loss','val_loss']].plot()
+
+x_test_predictions = np.argmax(model.predict(X_test_scaled), axis=1)
+
+print(confusion_matrix(y_test,x_test_predictions))
+print('\nPraveen.V')
+
+print('Praveen.v\n')
+print(classification_report(y_test,x_test_predictions))
+
+img = image.load_img('/five.jpg')
+
+type(img)
+
+img = image.load_img('/five.jpg')
+img_tensor = tf.convert_to_tensor(np.asarray(img))
+img_28 = tf.image.resize(img_tensor,(28,28))
+img_28_gray = tf.image.rgb_to_grayscale(img_28)
+img_28_gray_scaled = img_28_gray.numpy()/255.0
+
+x_single_prediction = np.argmax(
+    model.predict(img_28_gray_scaled.reshape(1,28,28,1)),
+     axis=1)
+
+print('Praveen.v\n')
+print(x_single_prediction)
+
+plt.imshow(img_28_gray_scaled.reshape(28,28),cmap='gray')
+
+img_28_gray_inverted = 255.0-img_28_gray
+img_28_gray_inverted_scaled = img_28_gray_inverted.numpy()/255.0
+
+
+x_single_prediction = np.argmax(
+    model.predict(img_28_gray_inverted_scaled.reshape(1,28,28,1)),
+     axis=1)
+
+print("Praveen.v\n")
+print(x_single_prediction)
+```
+
 
 ## OUTPUT
 
 ### Training Loss, Validation Loss Vs Iteration Plot
+![dl-3](https://github.com/user-attachments/assets/5e8d4023-4f14-4355-8ae2-b71da893ad6f)
 
-Include your plot here
-
+![dl-2](https://github.com/user-attachments/assets/35dee749-556c-4002-bac7-a35d7d89d6f1)
 ### Classification Report
-
-Include Classification Report here
+![Screenshot 2024-09-21 092933](https://github.com/user-attachments/assets/6496cd92-3eba-4dce-b721-bb12b6f41161)
 
 ### Confusion Matrix
-
-Include confusion matrix here
+![Screenshot 2024-09-21 093025](https://github.com/user-attachments/assets/ed25cb2b-f2a1-4d43-b498-961b97c1b3e1)
 
 ### New Sample Data Prediction
+![Screenshot 2024-09-21 093357](https://github.com/user-attachments/assets/fe8a4d98-2a6c-4cd2-89b8-a5310602a87b)
 
-Include your sample input and output for your hand written images.
+## Output
+![Screenshot 2024-09-21 093510](https://github.com/user-attachments/assets/f57d0d36-71a5-4285-a81e-113e7141156e)
 
 ## RESULT
 Include your result here.
